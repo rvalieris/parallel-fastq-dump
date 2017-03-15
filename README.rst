@@ -21,4 +21,7 @@ Examples
 --------
 ``$ parallel-fastq-dump --sra-id SRR1219899 --threads 4 --outdir out/ --split-files --gzip``
 
+Micro Benchmark
+---------
 
+.. figure:: https://cloud.githubusercontent.com/assets/6310472/23962085/bdefef44-098b-11e7-825f-1da53d6568d6.png
