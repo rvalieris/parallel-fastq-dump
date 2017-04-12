@@ -6,7 +6,7 @@ import tempfile
 import subprocess
 import argparse
 
-__version__ = "0.5.0"
+__version__ = "0.5.2"
 
 def pfd(args, extra_args, n_spots):
     tmp_dir = tempfile.TemporaryDirectory(prefix="pfd_",dir=args.tmpdir)
@@ -35,7 +35,10 @@ def pfd(args, extra_args, n_spots):
         wfd[fo] = open(os.path.join(args.outdir,fo), "wb")
 
     for i in range(0,args.threads):
-        ps[i].wait()
+        exit_code = ps[i].wait()
+        if exit_code != 0:
+            sys.__stderr__.write("exit code: {}\n".format(exit_code))
+            sys.exit(1)
         for fo in files:
             with open(os.path.join(tmp_dir.name,str(i),fo), "rb") as fd:
                 shutil.copyfileobj(fd, wfd[fo])
@@ -47,7 +50,7 @@ def get_spot_count(sra_id):
     total = 0
     for l in txt:
         total += int(l.split("|")[2].split(":")[0])
-    sys.__stderr__.write("found {} spots\n".format(total))
+    sys.__stderr__.write("spots: {}\n".format(total))
     return total
 
 def main():
