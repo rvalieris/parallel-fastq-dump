@@ -6,7 +6,7 @@ import tempfile
 import subprocess
 import argparse
 
-__version__ = "0.5.2"
+__version__ = "0.5.4"
 
 def pfd(args, extra_args, n_spots):
     tmp_dir = tempfile.TemporaryDirectory(prefix="pfd_",dir=args.tmpdir)
@@ -25,7 +25,7 @@ def pfd(args, extra_args, n_spots):
     for i in range(0,args.threads):
         d = os.path.join(tmp_dir.name, str(i))
         os.mkdir(d)
-        p = subprocess.Popen(["fastq-dump", "-N", str(out[i][0]), "-X", str(out[i][1]), "-O", d, *extra_args, args.sra_id])
+        p = subprocess.Popen(["fastq-dump", "-N", str(out[i][0]), "-X", str(out[i][1]), "-O", d]+extra_args+[args.sra_id])
         ps.append(p)
 
     ps[0].wait()
