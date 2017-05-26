@@ -17,11 +17,19 @@ Protips
 * Speed improvements are better with bigger files, think at least 200k reads/pairs for each thread used.
 * Mind the disk usage, you will need about double the space compared to a normal ``fastq-dump`` run.
 
+Install
+-------
+The preferred way to install is using `Bioconda <http://bioconda.github.io/>`_:
+
+``conda install parallel-fastq-dump``
+
+this will get you the sra-tools dependency as well.
+
 Examples
 --------
 ``$ parallel-fastq-dump --sra-id SRR1219899 --threads 4 --outdir out/ --split-files --gzip``
 
 Micro Benchmark
----------
+---------------
 
 .. figure:: https://cloud.githubusercontent.com/assets/6310472/23962085/bdefef44-098b-11e7-825f-1da53d6568d6.png
