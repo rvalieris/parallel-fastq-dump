@@ -6,7 +6,7 @@ import tempfile
 import subprocess
 import argparse
 
-__version__ = "0.5.4"
+__version__ = "0.5.5"
 
 def pfd(args, extra_args, n_spots):
     tmp_dir = tempfile.TemporaryDirectory(prefix="pfd_",dir=args.tmpdir)

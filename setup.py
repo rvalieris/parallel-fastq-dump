@@ -3,10 +3,10 @@ from setuptools import setup
 
 pname = "parallel-fastq-dump"
 
-exec(next(filter(
-	lambda l: l.startswith("__version__"),
-	open(pname).read().split("\n")
-)))
+exec(list(filter(
+    lambda l: l.startswith("__version__"),
+    open(pname).read().split("\n")
+))[0])
 
 setup(
     name=pname,
