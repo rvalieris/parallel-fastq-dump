@@ -45,8 +45,8 @@ def pfd(args, srr_id, extra_args, n_spots):
 
 def get_spot_count(sra_id):
     p = subprocess.Popen(["sra-stat", "--meta", "--quick", sra_id], stdout=subprocess.PIPE)
-    p.wait()
-    txt = p.stdout.read().decode().rstrip().split("\n")
+    stdout, stderr = p.communicate()
+    txt = stdout.decode().rstrip().split("\n")
     total = 0
     for l in txt:
         total += int(l.split("|")[2].split(":")[0])
