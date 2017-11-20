@@ -6,7 +6,7 @@ import tempfile
 import subprocess
 import argparse
 
-__version__ = "0.6.1"
+__version__ = "0.6.2"
 
 def pfd(args, srr_id, extra_args, n_spots):
     tmp_dir = tempfile.TemporaryDirectory(prefix="pfd_",dir=args.tmpdir)
@@ -77,7 +77,9 @@ def main():
         sys.exit(0)
 
     elif args.sra_id:
-        extra_srrs, extra_args = partition(lambda s: s.startswith('SRR'), extra)
+        extra_srrs, extra_args = partition(
+            lambda s: "SRR" in s.upper() or s.lower().endswith('.sra'),
+            extra)
         args.sra_id.extend(extra_srrs)
         sys.stderr.write("SRR ids: {}\n".format(args.sra_id))
         sys.stderr.write("extra args: {}\n".format(extra_args))
