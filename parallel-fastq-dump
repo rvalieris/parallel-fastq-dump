@@ -14,7 +14,8 @@ def pfd(args, srr_id, extra_args):
 
     n_spots = get_spot_count(srr_id)
     sys.stderr.write("{} spots: {}\n".format(srr_id,n_spots))
-    start,end,extra_args = get_range(n_spots, extra_args)
+    start = args.minSpotId
+    end = args.maxSpotId if args.maxSpotId is not None else n_spots
     blocks = split_blocks(start, end, args.threads)
     sys.stderr.write("blocks: {}\n".format(blocks))
 
@@ -38,26 +39,6 @@ def pfd(args, srr_id, extra_args):
                 wfd[fo] = open(os.path.join(args.outdir,fo), "wb")
             with open(os.path.join(tmp_path,fo), "rb") as fd:
                 shutil.copyfileobj(fd, wfd[fo])
-
-def get_range(n_spots, extra_args):
-    min_args = ['--minSpotId','-N']
-    max_args = ['--maxSpotId','-X']
-    assert not all([ ma in extra_args for ma in min_args ]), '--minSpotId and -N cannot be specified simultaneously.'
-    assert not all([ ma in extra_args for ma in max_args ]), '--maxSpotId and -X cannot be specified simultaneously.'
-    if sum([ ma in extra_args for ma in min_args+max_args ])==2:
-        start = [ int(extra_args[i+1]) for i in range(len(extra_args)) if extra_args[i] in min_args ][0]
-        end = [ int(extra_args[i+1]) for i in range(len(extra_args)) if extra_args[i] in max_args ][0]
-        for ma in min_args+max_args:
-            for i in range(len(extra_args)):
-                if extra_args[i] == ma:
-                    del_index = i
-                    break
-            del extra_args[del_index:(del_index+2)]
-    else:
-        start = 1
-        end = n_spots
-    assert n_spots>=end, "-X/--maxSpotId shouldn't be greater than n_spots."
-    return start,end,extra_args
 
 def split_blocks(start, end, n_pieces):
     total = (end-start+1)
@@ -94,6 +75,8 @@ def main():
     parser.add_argument("-t","--threads", help="number of threads", default=1, type=int)
     parser.add_argument("-O","--outdir", help="output directory", default=".")
     parser.add_argument("--tmpdir", help="temporary directory", default=None)
+    parser.add_argument("-N","--minSpotId", help="Minimum spot id", default=1, type=int)
+    parser.add_argument("-X","--maxSpotId", help="Maximum spot id", default=None, type=int)
     parser.add_argument("-V", "--version", help="shows version", action="store_true")
     args, extra = parser.parse_known_args()
 
