@@ -6,7 +6,7 @@ import tempfile
 import subprocess
 import argparse
 
-__version__ = "0.6.4"
+__version__ = "0.6.5"
 
 def pfd(args, srr_id, extra_args):
     tmp_dir = tempfile.TemporaryDirectory(prefix="pfd_",dir=args.tmpdir)
@@ -14,8 +14,12 @@ def pfd(args, srr_id, extra_args):
 
     n_spots = get_spot_count(srr_id)
     sys.stderr.write("{} spots: {}\n".format(srr_id,n_spots))
-    start = args.minSpotId
-    end = args.maxSpotId if args.maxSpotId is not None else n_spots
+
+    # minSpotId cant be lower than 1
+    start = max(args.minSpotId, 1)
+    # maxSpotId cant be higher than n_spots
+    end = min(args.maxSpotId, n_spots) if args.maxSpotId is not None else n_spots
+
     blocks = split_blocks(start, end, args.threads)
     sys.stderr.write("blocks: {}\n".format(blocks))
 
