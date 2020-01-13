@@ -15,7 +15,6 @@ Protips
 * All extra arguments will be passed directly to ``fastq-dump``, ``--gzip``, ``--split-files`` and filters works as expected.
 * This tool is **not** a replacement, you still need ``fastq-dump`` and ``sra-stat`` on your ``PATH`` for it to work properly.
 * Speed improvements are better with bigger files, think at least 200k reads/pairs for each thread used.
-* Mind the disk usage, you will need about double the space compared to a normal ``fastq-dump`` run.
 
 Install
 -------

@@ -6,7 +6,7 @@ import tempfile
 import subprocess
 import argparse
 
-__version__ = "0.6.5"
+__version__ = "0.6.6"
 
 def pfd(args, srr_id, extra_args):
     tmp_dir = tempfile.TemporaryDirectory(prefix="pfd_",dir=args.tmpdir)
@@ -43,6 +43,7 @@ def pfd(args, srr_id, extra_args):
                 wfd[fo] = open(os.path.join(args.outdir,fo), "wb")
             with open(os.path.join(tmp_path,fo), "rb") as fd:
                 shutil.copyfileobj(fd, wfd[fo])
+            os.remove(os.path.join(tmp_path,fo))
 
 def split_blocks(start, end, n_pieces):
     total = (end-start+1)
@@ -73,6 +74,14 @@ def partition(f, l):
             r[1].append(i)
     return r
 
+def is_sra_file(path):
+    f = os.path.basename(path)
+    if f.lower().endswith('.sra'): return True
+    if "SRR" in f.upper(): return True
+    if "ERR" in f.upper(): return True
+    if "DRR" in f.upper(): return True
+    return False
+
 def main():
     parser = argparse.ArgumentParser(description="parallel fastq-dump wrapper, extra args will be passed through")
     parser.add_argument("-s","--sra-id", help="SRA id", action="append")
@@ -90,9 +99,7 @@ def main():
         sys.exit(0)
 
     elif args.sra_id:
-        extra_srrs, extra_args = partition(
-            lambda s: "SRR" in s.upper() or s.lower().endswith('.sra'),
-            extra)
+        extra_srrs, extra_args = partition(is_sra_file,extra)
         args.sra_id.extend(extra_srrs)
         sys.stderr.write("SRR ids: {}\n".format(args.sra_id))
         sys.stderr.write("extra args: {}\n".format(extra_args))
