@@ -44,6 +44,10 @@ def pfd(args, srr_id, extra_args):
             with open(os.path.join(tmp_path,fo), "rb") as fd:
                 shutil.copyfileobj(fd, wfd[fo])
             os.remove(os.path.join(tmp_path,fo))
+    
+    # close the file descriptors for good measure
+    for fd in wfd.values():
+        os.close(fd)
 
 def split_blocks(start, end, n_pieces):
     total = (end-start+1)
