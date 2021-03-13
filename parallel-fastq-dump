@@ -47,7 +47,7 @@ def pfd(args, srr_id, extra_args):
     
     # close the file descriptors for good measure
     for fd in wfd.values():
-        os.close(fd)
+        fd.close()
 
 def split_blocks(start, end, n_pieces):
     total = (end-start+1)
