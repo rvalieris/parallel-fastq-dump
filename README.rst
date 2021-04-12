@@ -26,7 +26,7 @@ this will get you the sra-tools dependency as well.
 
 Examples
 --------
-``$ parallel-fastq-dump --sra-id SRR1219899 --threads 4 --outdir out/ --split-files --gzip``
+``$ parallel-fastq-dump --sra-id SRR2244401 --threads 4 --outdir out/ --split-files --gzip``
 
 Micro Benchmark
 ---------------
