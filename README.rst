@@ -24,6 +24,15 @@ The preferred way to install is using `Bioconda <http://bioconda.github.io/>`_:
 
 this will get you the sra-tools dependency as well.
 
+**Important**: Make sure the sra-tools package being installed is a recent version (>=2.10.0) to guarantee compatibility with NCBI servers,
+conda might try to install an older version to be compatible with existing packages installed in your env, to be sure use this command:
+
+``conda install parallel-fastq-dump 'sra-tools>=3.0.0'``
+
+If that doesn't work you could also install it on a separate new env:
+
+``conda create -n testenv parallel-fastq-dump 'sra-tools>=3.0.0'``
+
 Examples
 --------
 ``$ parallel-fastq-dump --sra-id SRR2244401 --threads 4 --outdir out/ --split-files --gzip``
